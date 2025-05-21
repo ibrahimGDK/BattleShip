@@ -34,6 +34,23 @@ public class BattleShip {
         }
     }
 
+    public static void printAimBoard() {
+        System.out.print("  ");
+        for (int i = 1; i <= SIZE; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        char[] rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print(rows[i] + " ");
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(aimBoard[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+
     // Tahtayı dosyaya kaydet
     public static void saveBoardToFile(char[][] board, String fileName) {
         try (FileWriter writer = new FileWriter(fileName)) {
@@ -53,7 +70,13 @@ public class BattleShip {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             for (int i = 0; i < SIZE; i++) {
                 String line = reader.readLine();
-                if (line == null || line.length() < SIZE) return false;
+                if (line == null) return false;
+
+                // Satır sonu karakterlerini temizle
+                line = line.replace("\r", "").replace("\n", "");
+
+                if (line.length() < SIZE) return false;
+
                 for (int j = 0; j < SIZE; j++) {
                     board[i][j] = line.charAt(j);
                 }
@@ -63,6 +86,7 @@ public class BattleShip {
             return false;
         }
     }
+
 
 
     public static void showAvailableDirections(int rowIndex, int columnIndex, int shipLength, char[][] board) {
@@ -198,6 +222,7 @@ public class BattleShip {
         if (board[row][coloumn] == '.'){
             aimBoard[row][coloumn] = 'o';
             System.out.println("Iskaladınız");
+
         }else {
             aimBoard[row][coloumn] = 'x';
             System.out.println("Vurdunuz");
@@ -206,9 +231,7 @@ public class BattleShip {
             if (isDestroyed(damagedShip)){
                 System.out.println(damagedShip + " gemisi battı.");
             }
-            if (isGameOver()){
-                System.out.println("Oyun Bitti");
-            }
+
         }
         saveBoardToFile(aimBoard,"src/2ndaim.txt");
     }
@@ -351,7 +374,7 @@ public class BattleShip {
         // Atış yapma Kısmı
         while(true){
 
-            printBoard();
+            printAimBoard();
             System.out.print("Atış yapmak için koordinat giriniz (örnek: B4): ");
             String shotCoordinate = input.nextLine().toUpperCase();
             char row = shotCoordinate.charAt(0);
