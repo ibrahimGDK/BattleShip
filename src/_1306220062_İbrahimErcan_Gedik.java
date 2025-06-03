@@ -1,11 +1,16 @@
 import java.io.*;
 import java.util.Scanner;
 
-public class BattleShip {
+
+    /*
+            HOCAM JAVA DOSYA İSİMLERİNİN RAKAMLA BAŞLAMASINA İZİN VERMEDİĞİ İÇİN KAYNAK DOSYAMIN ADINI _ İLE BAŞLATMAK ZORUNDA KALDIM
+            AMA KLASÖR VE ZİP DOSYAMIN ADI İSTEDİĞİNİZ FORMATTA ÖĞRENCİ NUMARASI İLE BAŞLIYOR. BİLGİNİZ OLSUN
+     */
+public class _1306220062_İbrahimErcan_Gedik {
 
     public static final int SIZE = 10;
-    public static char[][] board = new char[SIZE][SIZE];
-    public static char[][] aimBoard = new char[SIZE][SIZE];
+    public static char[][] board = new char[SIZE][SIZE]; // gemileri yerleşirdiğimiz tahta
+    public static char[][] aimBoard = new char[SIZE][SIZE]; // atış yaptığımız tahta
 
 
     // Tahtayı oluşturma fonksiyonu
@@ -52,21 +57,21 @@ public class BattleShip {
 
 
     // Tahtayı dosyaya kaydet
-    public static void saveBoardToFile(char[][] board, String fileName) {
-        try (FileWriter writer = new FileWriter(fileName)) {
+    public static void saveBoard(char[][] board, String fileName) {
+        try (FileWriter file = new FileWriter(fileName)) {
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[i].length; j++) {
-                    writer.write(board[i][j]);
+                    file.write(board[i][j]);
                 }
-                writer.write("\n");
+                file.write("\n");
             }
         } catch (IOException e) {
             System.out.println("Dosyaya yazma hatası: " + e.getMessage());
         }
     }
 
-    // Dosyadan tahta yükle
-    public static boolean loadBoardFromFile(char[][] board, String filename) {
+    // Dosyadaki tahtayı yükle
+    public static boolean loadBoard(char[][] board, String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             for (int i = 0; i < SIZE; i++) {
                 String line = reader.readLine();
@@ -220,11 +225,11 @@ public class BattleShip {
             return;
         }
         if (board[row][coloumn] == '.'){
-            aimBoard[row][coloumn] = 'o';
+            aimBoard[row][coloumn] = 'x';
             System.out.println("Iskaladınız");
 
         }else {
-            aimBoard[row][coloumn] = 'x';
+            aimBoard[row][coloumn] = 'o';
             System.out.println("Vurdunuz");
 
             char damagedShip = board[row][coloumn];
@@ -233,7 +238,7 @@ public class BattleShip {
             }
 
         }
-        saveBoardToFile(aimBoard,"src/2ndaim.txt");
+        saveBoard(aimBoard,"2ndaim.txt");
     }
 
     public static boolean isGameOver(){
@@ -266,28 +271,31 @@ public class BattleShip {
     }
 
     public static void main(String[] args) {
+
+        System.out.println("\n***HOCAM JAVA DOSYA İSİMLERİNİN RAKAMLA BAŞLAMASINA İZİN VERMEDİĞİ İÇİN KAYNAK DOSYAMIN ADINI _ İLE BAŞLATMAK ZORUNDA KALDIM\n" +
+                "            AMA KLASÖR VE ZİP DOSYAMIN ADI İSTEDİĞİNİZ FORMATTA ÖĞRENCİ NUMARASI İLE BAŞLIYOR. BİLGİNİZ OLSUN***\n");
         Scanner input = new Scanner(System.in);
 
-        File shipFile = new File("src/1stships.txt");
-        File aimFile = new File("src/2ndaim.txt");
+        File shipFile = new File("1stships.txt");
+        File aimFile = new File("2ndaim.txt");
 
         boolean shipExists = shipFile.exists();
         boolean aimExists = aimFile.exists();
 
         if (shipExists || aimExists) {
-            System.out.println("Önceki oyun kayıtları bulundu.");
-            System.out.println("Yeni oyun başlatmak için 'Q' tuşuna basın.");
+            System.out.println("Önceki oyuna ait tahta bulundu");
+            System.out.println("Yeni oyun başlatmak için 'Q' tuşuna basın ya da önceki oyundan devam etmek için enter a basın");
             String choice = input.nextLine().toUpperCase();
 
             if (choice.equals("Q")) {
                 if (shipFile.exists()) shipFile.delete();
                 if (aimFile.exists()) aimFile.delete();
-                System.out.println("Önceki oyun silindi. Yeni oyun başlatılıyor...\n");
+                System.out.println("Önceki oyun silindi. Yeni oyun başlatlıyor.\n");
             }
         }
 
         // Gemilerin tahtası dosyadan yüklensin ya da oluşturulsun
-        boolean loaded = loadBoardFromFile(board, "src/1stships.txt");
+        boolean loaded = loadBoard(board, "1stships.txt");
         if (!loaded) {
             System.out.println("Gemi tahtası bulunamadı. Yeni gemiler yerleştirilecek.");
             createBoard();
@@ -300,7 +308,7 @@ public class BattleShip {
                 }
             }
 
-            // Gemi tanımları
+            // Gemilerin isimleri ve sayıları
             char[] shipChars = {'A', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'E'};
             int[] shipLengths = {5, 4, 3, 3, 2, 2, 1, 1, 1};
 
@@ -343,21 +351,21 @@ public class BattleShip {
                     isPlaced = placeShip(rowIndex, columnIndex, shipLength, direction, shipChar);
 
                     if (isPlaced) {
-                        saveBoardToFile(board, "src/1stships.txt");
+                        saveBoard(board, "1stships.txt");
                     } else {
                         System.out.println("Yerleştirme başarısız! Tekrar deneyin.\n");
                     }
                 }
             }
 
-            saveBoardToFile(board, "src/1stships.txt");
+            saveBoard(board, "1stships.txt");
             System.out.println("Gemiler başarıyla yerleştirildi ve 1stships.txt dosyasına kaydedildi.\n");
         } else {
             System.out.println("1stships.txt dosyasından gemi tahtası yüklendi.");
         }
 
         // Hedef tahtasını yükle veya oluştur
-        boolean aimLoaded = loadBoardFromFile(aimBoard, "src/2ndaim.txt");
+        boolean aimLoaded = loadBoard(aimBoard, "2ndaim.txt");
         if (!aimLoaded) {
             System.out.println("2ndaim.txt bulunamadı. Boş hedef tahtası oluşturuluyor.");
             createBoard();  // aimBoard için tekrar kullan
@@ -366,10 +374,14 @@ public class BattleShip {
                     aimBoard[i][j] = '.';
                 }
             }
-            saveBoardToFile(aimBoard, "src/2ndaim.txt");
+            saveBoard(aimBoard, "2ndaim.txt");
         } else {
             System.out.println("2ndaim.txt hedef tahtası yüklendi.");
         }
+
+        System.out.println("\n***HOCAM BURADA İLK ATIŞI YAPINCA PROGRAM SONLANIYOR, EĞER TEKRARDAN KODU ÇALIŞTIRIP ENTER'A BASARSANIZ AIMBOAD AÇILIYOR VE\n " +
+                "KALDIĞINIZ YERDEN DEVAM EDEBİLİRSİNİZ BU SEFER OYUN BİTENE KADAR BİR HATA ALMAZSINIZ. MAALESEF BU SORUNU ÇÖZEMEDİM***\n");
+
 
         // Atış yapma Kısmı
         while(true){
@@ -378,18 +390,31 @@ public class BattleShip {
             System.out.print("Atış yapmak için koordinat giriniz (örnek: B4): ");
             String shotCoordinate = input.nextLine().toUpperCase();
             char row = shotCoordinate.charAt(0);
-            int rowIndex = row - 'A';
+            int rowIndex = row - 65; /* char türündeki row dan 65 çıkartınca kaçıncı satırda olduğumuzu buluyoruz
+                                       A nın ascii değeri 65*/
 
-            int column = Integer.parseInt(shotCoordinate.substring(1)) - 1;
+            int column = Integer.parseInt(shotCoordinate.substring(1)) - 1; // girilen kordinattan sütun bilgisini aldık
             if (rowIndex<0 || rowIndex>=10 || column<0 || column>=10){
                 System.out.println("Geçerseiz kordinat, yeri kordinat giriniz");
                 continue;
             }
             makeAShoot(rowIndex,column);
 
-            if (isGameOver()){
+            boolean gameOver = true;
+            for (int i = 0; i < SIZE; i++) {
+                for (int j = 0; j < SIZE; j++) {
+                    if (board[i][j] != '.' && aimBoard[i][j] != 'x') {
+                        gameOver = false;
+                        break;
+                    }
+                }
+                if (!gameOver) break;
+            }
+
+            if (gameOver) {
                 break;
             }
+
 
 
         }
