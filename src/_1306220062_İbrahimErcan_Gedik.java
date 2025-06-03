@@ -241,16 +241,6 @@ public class _1306220062_İbrahimErcan_Gedik {
         saveBoard(aimBoard,"2ndaim.txt");
     }
 
-    public static boolean isGameOver(){
-        for (int i=0; i<SIZE; i++){
-            for (int j=0; j<SIZE;j++){
-                if (board[i][j] != '.' && aimBoard[i][j] != 'x' ){ // ya 1stShips'te gemi kalmayacak ya da 2ndAim'de vurulmamış gemi kalmayacak
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     public static boolean isDestroyed (char shipChar){
         for (int i=0; i<SIZE; i++){
@@ -284,7 +274,7 @@ public class _1306220062_İbrahimErcan_Gedik {
 
         if (shipExists || aimExists) {
             System.out.println("Önceki oyuna ait tahta bulundu");
-            System.out.println("Yeni oyun başlatmak için 'Q' tuşuna basın ya da önceki oyundan devam etmek için enter a basın");
+            System.out.println("Yeni oyun başlatmak için 'Q' tuşuna basın ya da önceki oyundan devam etmek için K a basın");
             String choice = input.nextLine().toUpperCase();
 
             if (choice.equals("Q")) {
@@ -379,7 +369,7 @@ public class _1306220062_İbrahimErcan_Gedik {
             System.out.println("2ndaim.txt hedef tahtası yüklendi.");
         }
 
-        System.out.println("\n***HOCAM BURADA İLK ATIŞI YAPINCA PROGRAM SONLANIYOR, EĞER TEKRARDAN KODU ÇALIŞTIRIP ENTER'A BASARSANIZ AIMBOAD AÇILIYOR VE\n " +
+        System.out.println("\n***HOCAM BURADA İLK ATIŞI YAPINCA PROGRAM SONLANIYOR, EĞER TEKRARDAN KODU ÇALIŞTIRIP K'YA BASARSANIZ AIMBOAD AÇILIYOR VE\n " +
                 "KALDIĞINIZ YERDEN DEVAM EDEBİLİRSİNİZ BU SEFER OYUN BİTENE KADAR BİR HATA ALMAZSINIZ. MAALESEF BU SORUNU ÇÖZEMEDİM***\n");
 
 
